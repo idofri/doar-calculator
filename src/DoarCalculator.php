@@ -23,11 +23,11 @@ class DoarCalculator
 	];
 
 	public $serviceOptions = [
-		'regular' 		=> 'משלוח רגיל',
-		'confirmation' 	=> 'רשום~עם אישור מסירה',
-		'registered' 	=> 'רשום~ללא אישור מסירה',
-		'scanned' 		=> 'רשום~עם אישור מסירה וסריקה',
-		'twentyfour' 	=> 'דואר 24',
+		'regular'		=> 'משלוח רגיל',
+		'confirmation'	=> 'רשום~עם אישור מסירה',
+		'registered'	=> 'רשום~ללא אישור מסירה',
+		'scanned'		=> 'רשום~עם אישור מסירה וסריקה',
+		'twentyfour'	=> 'דואר 24',
 		'express'		=> 'רשום מהיר'
 	];
 
