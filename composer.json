@@ -1,0 +1,21 @@
+{
+    "name": "idofri/doar-calculator",
+    "type": "package",
+    "require": {
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ido Friedlander",
+            "email": "idofri@gmail.com"
+        }
+    ],
+	"autoload": {
+        "psr-4": {
+            "Doar\\": "src/"
+        }
+    },
+    "version": "1.0.0",
+    "minimum-stability": "dev"
+}
