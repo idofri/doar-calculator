@@ -1,4 +1,4 @@
-Doar Calculator - IPC postage cacculator
+Doar Calculator - IPC postage calculator
 =======================
 
 ```php
