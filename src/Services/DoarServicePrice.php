@@ -4,66 +4,60 @@ namespace Doar\Services;
 
 class DoarServicePrice
 {
-	use DoarServiceTrait;
-	
-	protected $Pweight;
-	protected $Pqty;
-	protected $Pprice;
-	protected $Ptotal;
-	protected $commentsNo;
-	protected $comments = [];
-	
-	/**
-	 * @access public
+    use DoarServiceTrait;
+
+    protected $Pweight;
+    protected $Pqty;
+    protected $Pprice;
+    protected $Ptotal;
+    protected $commentsNo;
+    protected $comments = [];
+
+    /**
      * @return string
      */
-	public function getPriceWeight()
-	{
-		return $this->Pweight;
-	}
-	
-	/**
-	 * @access public
+    public function getPriceWeight()
+    {
+        return $this->Pweight;
+    }
+
+    /**
      * @return int
      */
-	public function getPriceQuantity()
-	{
-		return (int) $this->Pqty;
-	}
-	
-	/**
-	 * @access public
+    public function getPriceQuantity()
+    {
+        return (int) $this->Pqty;
+    }
+
+    /**
      * @return float
      */
-	public function getPrice()
-	{
-		return (float) $this->Pprice;
-	}
-	
-	/**
-	 * @access public
+    public function getPrice()
+    {
+        return (float) $this->Pprice;
+    }
+
+    /**
      * @return float
      */
-	public function getPriceTotal()
-	{
-		return (float) $this->Ptotal;
-	}
-	
-	/**
-	 * @access public
+    public function getPriceTotal()
+    {
+        return (float) $this->Ptotal;
+    }
+
+    /**
      * @return int
      */
-	public function getCommentTotal()
-	{
-		return (int) $this->commentsNo;
-	}
-	
-	/**
-	 * @access public
+    public function getCommentTotal()
+    {
+        return (int) $this->commentsNo;
+    }
+
+    /**
      * @return array
      */
-	public function getComments()
-	{
-		return $this->comments;
-	}
+    public function getComments()
+    {
+        return $this->comments;
+    }
 }

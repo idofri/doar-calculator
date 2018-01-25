@@ -4,26 +4,24 @@ namespace Doar\Services;
 
 class DoarServiceComment
 {
-	use DoarServiceTrait;
-	
-	protected $cno;
-	protected $ctext;
-	
-	/**
-	 * @access public
+    use DoarServiceTrait;
+
+    protected $cno;
+    protected $ctext;
+
+    /**
      * @return int
      */
-	public function getCommentNumber()
-	{
-		return (int) $this->cno;
-	}
-	
-	/**
-	 * @access public
+    public function getCommentNumber()
+    {
+        return (int) $this->cno;
+    }
+
+    /**
      * @return string
      */
-	public function getCommentText()
-	{
-		return $this->ctext;
-	}
+    public function getCommentText()
+    {
+        return $this->ctext;
+    }
 }
