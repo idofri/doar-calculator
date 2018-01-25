@@ -2,7 +2,7 @@ Doar Calculator - IPC postage cacculator
 =======================
 
 ```php
-$calculator = new Doar\DoarCalculator(['verify' => false]);
+$calculator = new Doar\DoarCalculator();
 
 $res = $calculator->setServiceOption($calculator::STANDARD_DELIVERY)
 	->setWeight(40)
