@@ -5,16 +5,45 @@ namespace Doar;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
+use Doar\Services\DoarService;
 
+/**
+ * Postage calculator for Israel Postal Company.
+ */
 class DoarCalculator
 {
     const API_URL = 'https://www.israelpost.co.il/npostcalc.nsf/CalcPrice';
-
     const MENU_CHOSEN = 'משלוח דואר בארץ~מכתב';
-
+	
+	/**
+     * Postal-service codes
+     */
+	const PRIORITY_POST24 = 'דואר 24';
+	const REGISTERED_RAPID = 'רשום מהיר';
+	const STANDARD_DELIVERY = 'משלוח רגיל';
+	const REGISTERED_WITH_CONFIRMATION = 'רשום~עם אישור מסירה';
+	const REGISTERED_WITHOUT_CONFIRMATION = 'רשום~ללא אישור מסירה';
+	const REGISTERED_CONFIRMATION_AND_SCAN = 'רשום~עם אישור מסירה וסריקה';
+	
+	protected $serviceOptions = [
+		1 => self::PRIORITY_POST24,
+		2 => self::REGISTERED_RAPID,
+		3 => self::STANDARD_DELIVERY,
+		4 => self::REGISTERED_WITH_CONFIRMATION,
+		5 => self::REGISTERED_WITHOUT_CONFIRMATION,
+		6 => self::REGISTERED_CONFIRMATION_AND_SCAN,
+	];
+	
+	/**
+     * @var ClientInterface
+     */
     protected $httpClient;
-
-    protected $config = [
+	
+	
+	/**
+     * GET parameters
+     */
+    protected $params = [
         'qty'           => 0,
         'weight'        => 0,
         'lang'          => 'HE',
@@ -22,67 +51,120 @@ class DoarCalculator
         'menuChosen'    => self::MENU_CHOSEN,
         'serviceoption' => '',
     ];
-
-    public $serviceOptions = [
-        'regular'		    => 'משלוח רגיל',
-        'confirmation'	=> 'רשום~עם אישור מסירה',
-        'registered'	  => 'רשום~ללא אישור מסירה',
-        'scanned'		    => 'רשום~עם אישור מסירה וסריקה',
-        'twentyfour'	  => 'דואר 24',
-        'express'		    => 'רשום מהיר',
-    ];
-
+	
+	/**
+	 * @access public
+     * @param array $options
+     * @param ClientInterface $client
+     *
+     * @return void
+     */
     public function __construct(array $options = [], ClientInterface $client = null)
     {
         $this->httpClient = (null !== $client) ? $client : new Client($options, $client);
     }
-
+	
+	/**
+     * @access public
+     * @return array
+     */
+	public function getServiceOptions()
+	{
+		return $this->serviceOptions;
+	}
+	
+	/**
+     * @access public
+     * @return ClientInterface
+     */
     public function getClient()
     {
         return $this->httpClient;
     }
-
+	
+	/**
+     * @access public
+     * @param  ClientInterface $client
+     * @return $this
+     */
     public function setClient(ClientInterface $client)
     {
         $this->httpClient = $client;
 
         return $this;
     }
-
+	
+	/**
+     * @access public
+     * @param  int $weight
+     * @return $this
+     */
     public function setWeight($weight)
     {
-        $this->config['weight'] = $weight;
+        $this->params['weight'] = $weight;
 
         return $this;
     }
-
+	
+	/**
+     * @access public
+     * @param  int $quantity
+     * @return $this
+     */
     public function setQuantity($quantity)
     {
-        $this->config['qty'] = $quantity;
+        $this->params['qty'] = $quantity;
 
         return $this;
     }
-
+	
+	/**
+     * @access public
+     * @param  string $language
+     * @return $this
+     */
     public function setLanguage($language)
     {
-        $this->config['lang'] = $language;
+        $this->params['lang'] = $language;
 
         return $this;
     }
-
+	
+	/**
+     * @access public
+     * @param  string|int $option
+     * @return $this
+	 *
+	 * @throws \DoarException
+     */
     public function setServiceOption($option)
     {
-        $this->config['serviceoption'] = $option;
-
-        return $this;
+		if (isset($this->serviceOptions[$option])) {
+			$this->params['serviceoption'] = $this->serviceOptions[$option];
+		} elseif (in_array($option, $this->serviceOptions)) {
+			$this->params['serviceoption'] = $option;
+		} else {
+			throw new \DoarException('Invalid service option.');
+		}
+		
+		return $this;
     }
-
+	
+	/**
+     * Make an HTTP GET request to API
+     *
+     * @access public
+     * @return Services\DoarService
+     *
+     * @throws \RequestException
+     */
     public function Calculate()
     {
         try {
-            $response = $this->getClient()->request('GET', self::API_URL, ['query' => $this->config]);
-
-            return json_decode($response->getBody()->getContents());
+            $response = $this->getClient()->request('GET', self::API_URL, ['query' => $this->params]);
+			$std = json_decode($response->getBody()->getContents());
+            $service = new DoarService;
+			return $service->newFromStd($std);
         } catch (RequestException $e) {
             return $e;
         }
