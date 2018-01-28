@@ -2,6 +2,7 @@
     "name": "idofri/doar-calculator",
     "type": "package",
     "require": {
+        "php": ">=5.5",
         "guzzlehttp/guzzle": "^6.3"
     },
     "license": "MIT",
